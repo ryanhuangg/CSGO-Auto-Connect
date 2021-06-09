@@ -6,7 +6,7 @@ from time import sleep
 from signal import signal, SIGINT
 from sys import exit
 
-logging.basicConfig(format='%(asctime)s %(levelname)-8s %(message)s',
+logging.basicConfig(format='[%(asctime)s] %(levelname)-8s %(message)s',
                     level=logging.INFO,
                     datefmt='%Y-%m-%d %H:%M:%S')
 
@@ -24,6 +24,8 @@ sleep_sec = 10
 path = args.drive + r":\Program Files (x86)\Steam\steamapps\common\Counter-Strike Global Offensive\csgo\cfg\autoexec.cfg"
 log_str = 'con_logfile console.log\n'
 writecfg = 'host_writeconfig\n'
+already_connected = False
+connected_str = "Connected to"
 
 if not os.path.isfile(path):
     a = open(path, "w")
@@ -45,6 +47,9 @@ for i in lines:
         in_file = True
     if i == writecfg:
         has_end = True
+    if connected_str in i:
+        already_connected = True
+
 if lines == []:
     lines = ["", ""]
 if not in_file:
@@ -65,6 +70,7 @@ def scan():
         if dc_msg in x or timeout_msg in x or manual_dc in x:
             f.close()
             logging.info("Disconnected from server, reconnecting...")
+            sleep(60)
             connect(server_ip)
             writer = open(log_path, 'w')
             writer.close()
@@ -84,9 +90,10 @@ def connect(ip):
     webbrowser.open_new("steam://connect/" + server_ip)
 
 
-webbrowser.open_new("steam://run/730//%2Bexec%20autoexec.cfg/")
-sleep(15)
-connect(server_ip)
+if not already_connected:
+    webbrowser.open_new("steam://run/730//%2Bexec%20autoexec.cfg/")
+    sleep(15)
+    connect(server_ip)
 
 if __name__ == '__main__':
     signal(SIGINT, handler)
