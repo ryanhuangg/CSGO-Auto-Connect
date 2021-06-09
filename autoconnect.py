@@ -19,7 +19,7 @@ log_path = args.drive + r":/Program Files (x86)/Steam/steamapps/common/Counter-S
 server_ip = args.ip
 dc_msg = "Disconnect: Relog to continue.\n"
 timeout_msg = "Server connection timed out.\n"
-manual_dc = r"Resource materials\panorama\images\icons\ui\globe.svg failed to load."
+manual_dc = r"ChangeGameUIState: CSGO_GAME_UI_STATE_INGAME -> CSGO_GAME_UI_STATE_MAINMENU"
 sleep_sec = 10
 path = args.drive + r":\Program Files (x86)\Steam\steamapps\common\Counter-Strike Global Offensive\csgo\cfg\autoexec.cfg"
 log_str = 'con_logfile console.log\n'
@@ -70,8 +70,7 @@ def scan():
         if dc_msg in x or timeout_msg in x or manual_dc in x:
             f.close()
             logging.info("Disconnected from server, reconnecting...")
-            writer = open(log_path, 'w')
-            writer.close()
+            open(log_path, 'w').close()
             sleep(60)
             connect(server_ip)
             return
@@ -79,8 +78,7 @@ def scan():
 
 
 def handler(signal_received, frame):
-    writer = open(log_path, 'w')
-    writer.close()
+    open(log_path, 'w').close()
     print('Exiting...')
     exit(0)
 
@@ -94,9 +92,8 @@ if not already_connected:
     webbrowser.open_new("steam://run/730//%2Bexec%20autoexec.cfg/")
     sleep(15)
     connect(server_ip)
-    wait(10)
-    writer = open(log_path, 'w')
-    writer.close()
+    sleep(10)
+    open(log_path, 'w').close()
 
 if __name__ == '__main__':
     signal(SIGINT, handler)
