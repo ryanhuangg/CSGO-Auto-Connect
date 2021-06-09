@@ -17,7 +17,7 @@ args = parser.parse_args()
 
 log_path = args.drive + r":/Program Files (x86)/Steam/steamapps/common/Counter-Strike Global Offensive/csgo/console.log"
 server_ip = args.ip
-dc_msg = "Disconnect: Relog to continue.\n"
+dc_msg = "Disconnect: Server shutting down.\n"
 timeout_msg = "Server connection timed out.\n"
 manual_dc = r"ChangeGameUIState: CSGO_GAME_UI_STATE_INGAME -> CSGO_GAME_UI_STATE_MAINMENU"
 sleep_sec = 10
