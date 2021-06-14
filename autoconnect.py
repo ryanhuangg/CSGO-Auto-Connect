@@ -73,7 +73,6 @@ def scan():
             open(log_path, 'w').close()
             sleep(60)
             connect(server_ip)
-            return
     f.close()
 
 
